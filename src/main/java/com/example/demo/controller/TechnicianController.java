@@ -4,6 +4,7 @@ import com.example.demo.dto.TechnicianResponse;
 import com.example.demo.service.TechnicianService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 import java.util.List;
 @RestController
 @RequestMapping("/api/technicians")
@@ -19,10 +20,10 @@ public class TechnicianController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public TechnicianResponse create(@RequestBody TechnicianRequest request) { return service.create(request); }
+    public TechnicianResponse create(@Valid @RequestBody TechnicianRequest request) { return service.create(request); }
     
     @PutMapping("/{id}")
-    public TechnicianResponse update(@PathVariable Long id, @RequestBody TechnicianRequest request) {
+    public TechnicianResponse update(@PathVariable Long id, @Valid @RequestBody TechnicianRequest request) {
         return service.update(id, request);
     }
     

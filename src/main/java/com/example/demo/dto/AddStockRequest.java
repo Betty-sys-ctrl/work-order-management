@@ -1,6 +1,10 @@
 package com.example.demo.dto;
 import lombok.Data;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 @Data
 public class AddStockRequest {
+    @NotNull(message = "Quantity is mandatory")
+    @Min(value = 1, message = "Quantity must be at least 1")
     private Integer quantity;
 }

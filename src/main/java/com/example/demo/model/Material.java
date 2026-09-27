@@ -3,7 +3,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class Material {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

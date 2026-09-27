@@ -17,7 +17,7 @@ public class TechnicianService {
     }
     
     public TechnicianResponse getById(Long id) {
-        Technician tech = repository.findById(id).orElseThrow(() -> new RuntimeException("Technician not found"));
+        Technician tech = repository.findById(id).orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Technician not found"));
         return mapToResponse(tech);
     }
     
@@ -34,7 +34,7 @@ public class TechnicianService {
     
     @Transactional
     public TechnicianResponse update(Long id, TechnicianRequest request) {
-        Technician tech = repository.findById(id).orElseThrow(() -> new RuntimeException("Technician not found"));
+        Technician tech = repository.findById(id).orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Technician not found"));
         tech.setName(request.getName());
         tech.setEmail(request.getEmail());
         tech.setSpecialty(request.getSpecialty());
@@ -44,7 +44,7 @@ public class TechnicianService {
     
     @Transactional
     public void delete(Long id) {
-        Technician tech = repository.findById(id).orElseThrow(() -> new RuntimeException("Technician not found"));
+        Technician tech = repository.findById(id).orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Technician not found"));
         tech.setActive(false);
         repository.save(tech);
     }

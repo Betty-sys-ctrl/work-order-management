@@ -3,7 +3,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class StatusHistory {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

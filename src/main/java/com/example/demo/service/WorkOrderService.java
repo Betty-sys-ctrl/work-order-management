@@ -66,9 +66,9 @@ public class WorkOrderService {
     @Transactional
     public WorkOrderResponse assignTechnician(Long orderId, Long technicianId) {
         WorkOrder order = orderRepository.findById(orderId)
-            .orElseThrow(() -> new RuntimeException("Order not found"));
+            .orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Order not found"));
         Technician tech = technicianRepository.findById(technicianId)
-            .orElseThrow(() -> new RuntimeException("Technician not found"));
+            .orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Technician not found"));
         order.setTechnician(tech);
         order.setUpdatedAt(LocalDateTime.now());
         return mapToResponse(orderRepository.save(order));
@@ -77,7 +77,7 @@ public class WorkOrderService {
     @Transactional
     public WorkOrderResponse changeStatus(Long orderId, ChangeStatusRequest request) {
         WorkOrder order = orderRepository.findById(orderId)
-            .orElseThrow(() -> new RuntimeException("Order not found"));
+            .orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Order not found"));
             
         Status previousStatus = order.getStatus();
         order.setStatus(request.getNewStatus());
@@ -98,13 +98,13 @@ public class WorkOrderService {
     @Transactional
     public OrderMaterialResponse useMaterial(Long orderId, OrderMaterialRequest request) {
         WorkOrder order = orderRepository.findById(orderId)
-            .orElseThrow(() -> new RuntimeException("Order not found"));
+            .orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Order not found"));
             
         Material material = materialRepository.findById(request.getMaterialId())
-            .orElseThrow(() -> new RuntimeException("Material not found"));
+            .orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Material not found"));
             
         if (material.getStockQuantity() == null || material.getStockQuantity() < request.getQuantityUsed()) {
-            throw new RuntimeException("Insufficient stock for material ID: " + material.getId());
+            throw new com.example.demo.exception.BusinessRuleException("Insufficient stock for material ID: " + material.getId());
         }
         
         material.setStockQuantity(material.getStockQuantity() - request.getQuantityUsed());

@@ -7,6 +7,7 @@ import com.example.demo.dto.OrderMaterialResponse;
 import com.example.demo.service.WorkOrderService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/api/orders")
 public class WorkOrderController {
@@ -28,7 +29,7 @@ public class WorkOrderController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public WorkOrderResponse createOrder(@RequestBody WorkOrderRequest request) {
+    public WorkOrderResponse createOrder(@Valid @RequestBody WorkOrderRequest request) {
         return service.createOrder(request);
     }
     
@@ -38,13 +39,13 @@ public class WorkOrderController {
     }
     
     @PutMapping("/{id}/status")
-    public WorkOrderResponse changeStatus(@PathVariable Long id, @RequestBody ChangeStatusRequest request) {
+    public WorkOrderResponse changeStatus(@PathVariable Long id, @Valid @RequestBody ChangeStatusRequest request) {
         return service.changeStatus(id, request);
     }
     
     @PostMapping("/{id}/materials")
     @ResponseStatus(HttpStatus.CREATED)
-    public OrderMaterialResponse useMaterial(@PathVariable Long id, @RequestBody OrderMaterialRequest request) {
+    public OrderMaterialResponse useMaterial(@PathVariable Long id, @Valid @RequestBody OrderMaterialRequest request) {
         return service.useMaterial(id, request);
     }
 }

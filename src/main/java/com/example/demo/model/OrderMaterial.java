@@ -2,7 +2,8 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 import lombok.*;
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class OrderMaterial {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

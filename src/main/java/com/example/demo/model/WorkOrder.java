@@ -4,7 +4,8 @@ import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
 @Entity
-@Data @NoArgsConstructor @AllArgsConstructor @Builder
+@Getter
+@Setter @NoArgsConstructor @AllArgsConstructor @Builder
 public class WorkOrder {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

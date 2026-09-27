@@ -1,0 +1,278 @@
+{
+  "info": {
+    "name": "Work Orders Management",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:8080"
+    }
+  ],
+  "item": [
+    {
+      "name": "Technicians",
+      "item": [
+        {
+          "name": "Create Technician",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/technicians",
+              "host": ["{{base_url}}"],
+              "path": ["api", "technicians"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe\",\n  \"email\": \"john@example.com\",\n  \"specialty\": \"Electronics\",\n  \"active\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Technicians",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/technicians",
+              "host": ["{{base_url}}"],
+              "path": ["api", "technicians"]
+            }
+          }
+        },
+        {
+          "name": "Get Technician by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/technicians/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "technicians", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Technician",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/technicians/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "technicians", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"John Doe Updated\",\n  \"email\": \"john.updated@example.com\",\n  \"specialty\": \"Advanced Electronics\",\n  \"active\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Technician",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/technicians/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "technicians", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Materials",
+      "item": [
+        {
+          "name": "Create Material",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/materials",
+              "host": ["{{base_url}}"],
+              "path": ["api", "materials"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Copper Wire\",\n  \"sku\": \"CW-001\",\n  \"stockQuantity\": 100\n}"
+            }
+          }
+        },
+        {
+          "name": "Get All Materials",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/materials",
+              "host": ["{{base_url}}"],
+              "path": ["api", "materials"]
+            }
+          }
+        },
+        {
+          "name": "Get Material by ID",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/materials/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "materials", "1"]
+            }
+          }
+        },
+        {
+          "name": "Update Material",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/materials/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "materials", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Copper Wire Updated\",\n  \"sku\": \"CW-002\",\n  \"stockQuantity\": 150\n}"
+            }
+          }
+        },
+        {
+          "name": "Add Stock to Material",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/materials/1/add-stock",
+              "host": ["{{base_url}}"],
+              "path": ["api", "materials", "1", "add-stock"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantity\": 50\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Material",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{base_url}}/api/materials/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "materials", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Work Orders",
+      "item": [
+        {
+          "name": "Create Work Order",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/orders",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Fix AC Unit\",\n  \"description\": \"The air conditioning is blowing warm air.\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Assign Technician",
+          "request": {
+            "method": "PUT",
+            "url": {
+              "raw": "{{base_url}}/api/orders/1/assign/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "1", "assign", "1"]
+            }
+          }
+        },
+        {
+          "name": "Change Status",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/orders/1/status",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "1", "status"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"newStatus\": \"IN_PROGRESS\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Use Material",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/orders/1/materials",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "1", "materials"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"materialId\": 1,\n  \"quantityUsed\": 2\n}"
+            }
+          }
+        },
+        {
+          "name": "Search Orders",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/orders?status=PENDING&technicianId=1&page=0&size=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders"],
+              "query": [
+                { "key": "status", "value": "PENDING" },
+                { "key": "technicianId", "value": "1" },
+                { "key": "page", "value": "0" },
+                { "key": "size", "value": "10" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Status History",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{base_url}}/api/orders/1/history",
+              "host": ["{{base_url}}"],
+              "path": ["api", "orders", "1", "history"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

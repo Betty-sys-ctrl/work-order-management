@@ -15,4 +15,9 @@ public class WorkOrderController {
     public WorkOrderResponse createOrder(@RequestBody WorkOrderRequest request) {
         return service.createOrder(request);
     }
+    
+    @PutMapping("/{id}/assign/{technicianId}")
+    public WorkOrderResponse assignTechnician(@PathVariable Long id, @PathVariable Long technicianId) {
+        return service.assignTechnician(id, technicianId);
+    }
 }

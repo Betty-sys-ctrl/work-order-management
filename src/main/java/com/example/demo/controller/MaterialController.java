@@ -1,4 +1,5 @@
 package com.example.demo.controller;
+import com.example.demo.dto.AddStockRequest;
 import com.example.demo.dto.MaterialRequest;
 import com.example.demo.dto.MaterialResponse;
 import com.example.demo.service.MaterialService;
@@ -29,4 +30,9 @@ public class MaterialController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) { service.delete(id); }
+    
+    @PatchMapping("/{id}/add-stock")
+    public MaterialResponse addStock(@PathVariable Long id, @RequestBody AddStockRequest request) {
+        return service.addStock(id, request.getQuantity());
+    }
 }

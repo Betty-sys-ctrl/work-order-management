@@ -45,6 +45,16 @@ public class MaterialService {
         repository.deleteById(id);
     }
     
+    @Transactional
+    public MaterialResponse addStock(Long id, Integer quantity) {
+        if (quantity == null || quantity <= 0) {
+            throw new IllegalArgumentException("Quantity to add must be greater than zero");
+        }
+        Material mat = repository.findById(id).orElseThrow(() -> new RuntimeException("Material not found"));
+        mat.setStockQuantity((mat.getStockQuantity() != null ? mat.getStockQuantity() : 0) + quantity);
+        return mapToResponse(repository.save(mat));
+    }
+    
     private MaterialResponse mapToResponse(Material mat) {
         MaterialResponse res = new MaterialResponse();
         res.setId(mat.getId());

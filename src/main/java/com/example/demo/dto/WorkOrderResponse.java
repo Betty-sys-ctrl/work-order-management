@@ -1,20 +1,16 @@
 package com.example.demo.dto;
-
-import com.example.demo.model.Priority;
-import com.example.demo.model.WorkOrderStatus;
+import com.example.demo.model.Status;
 import lombok.Data;
-
 import java.time.LocalDateTime;
-
+import java.util.List;
 @Data
 public class WorkOrderResponse {
     private Long id;
     private String title;
     private String description;
-    private WorkOrderStatus status;
-    private Priority priority;
-    private String customerName;
-    private String assignedTo;
+    private Status status;
+    private Long technicianId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private List<OrderMaterialResponse> materials;
 }

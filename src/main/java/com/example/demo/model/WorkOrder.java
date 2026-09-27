@@ -1,50 +1,27 @@
 package com.example.demo.model;
-
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import java.time.LocalDateTime;
-
+import java.util.List;
 @Entity
-@Table(name = "work_orders")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
+@Data @NoArgsConstructor @AllArgsConstructor @Builder
 public class WorkOrder {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(nullable = false, length = 100)
     private String title;
-
-    @Column(nullable = false, length = 500)
     private String description;
-
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private WorkOrderStatus status;
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Priority priority;
-
-    @Column(name = "customer_name", nullable = false)
-    private String customerName;
-
-    @Column(name = "assigned_to")
-    private String assignedTo;
-
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
+    private Status status;
     private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+    
+    @ManyToOne
+    @JoinColumn(name = "technician_id")
+    private Technician technician;
+    
+    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL)
+    private List<StatusHistory> statusHistories;
+    
+    @OneToMany(mappedBy = "workOrder", cascade = CascadeType.ALL)
+    private List<OrderMaterial> orderMaterials;
 }

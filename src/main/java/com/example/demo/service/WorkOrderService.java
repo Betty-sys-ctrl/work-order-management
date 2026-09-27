@@ -2,13 +2,19 @@ package com.example.demo.service;
 import com.example.demo.dto.WorkOrderRequest;
 import com.example.demo.dto.WorkOrderResponse;
 import com.example.demo.dto.ChangeStatusRequest;
+import com.example.demo.dto.OrderMaterialRequest;
+import com.example.demo.dto.OrderMaterialResponse;
 import com.example.demo.model.Status;
 import com.example.demo.model.StatusHistory;
 import com.example.demo.model.Technician;
 import com.example.demo.model.WorkOrder;
+import com.example.demo.model.Material;
+import com.example.demo.model.OrderMaterial;
 import com.example.demo.repository.StatusHistoryRepository;
 import com.example.demo.repository.TechnicianRepository;
 import com.example.demo.repository.WorkOrderRepository;
+import com.example.demo.repository.MaterialRepository;
+import com.example.demo.repository.OrderMaterialRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
@@ -17,11 +23,17 @@ public class WorkOrderService {
     private final WorkOrderRepository orderRepository;
     private final TechnicianRepository technicianRepository;
     private final StatusHistoryRepository statusHistoryRepository;
+    private final MaterialRepository materialRepository;
+    private final OrderMaterialRepository orderMaterialRepository;
     
-    public WorkOrderService(WorkOrderRepository orderRepository, TechnicianRepository technicianRepository, StatusHistoryRepository statusHistoryRepository) {
+    public WorkOrderService(WorkOrderRepository orderRepository, TechnicianRepository technicianRepository, 
+                            StatusHistoryRepository statusHistoryRepository, MaterialRepository materialRepository, 
+                            OrderMaterialRepository orderMaterialRepository) {
         this.orderRepository = orderRepository;
         this.technicianRepository = technicianRepository;
         this.statusHistoryRepository = statusHistoryRepository;
+        this.materialRepository = materialRepository;
+        this.orderMaterialRepository = orderMaterialRepository;
     }
     
     @Transactional
@@ -66,6 +78,36 @@ public class WorkOrderService {
         statusHistoryRepository.save(history);
         
         return mapToResponse(order);
+    }
+    
+    @Transactional
+    public OrderMaterialResponse useMaterial(Long orderId, OrderMaterialRequest request) {
+        WorkOrder order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new RuntimeException("Order not found"));
+            
+        Material material = materialRepository.findById(request.getMaterialId())
+            .orElseThrow(() -> new RuntimeException("Material not found"));
+            
+        if (material.getStockQuantity() == null || material.getStockQuantity() < request.getQuantityUsed()) {
+            throw new RuntimeException("Insufficient stock for material ID: " + material.getId());
+        }
+        
+        material.setStockQuantity(material.getStockQuantity() - request.getQuantityUsed());
+        materialRepository.save(material);
+        
+        OrderMaterial orderMaterial = OrderMaterial.builder()
+                .workOrder(order)
+                .material(material)
+                .quantityUsed(request.getQuantityUsed())
+                .build();
+        orderMaterialRepository.save(orderMaterial);
+        
+        OrderMaterialResponse res = new OrderMaterialResponse();
+        res.setId(orderMaterial.getId());
+        res.setWorkOrderId(order.getId());
+        res.setMaterialId(material.getId());
+        res.setQuantityUsed(orderMaterial.getQuantityUsed());
+        return res;
     }
     
     private WorkOrderResponse mapToResponse(WorkOrder order) {

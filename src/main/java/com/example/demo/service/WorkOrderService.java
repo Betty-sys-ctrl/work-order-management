@@ -1,9 +1,12 @@
 package com.example.demo.service;
 import com.example.demo.dto.WorkOrderRequest;
 import com.example.demo.dto.WorkOrderResponse;
+import com.example.demo.dto.ChangeStatusRequest;
 import com.example.demo.model.Status;
+import com.example.demo.model.StatusHistory;
 import com.example.demo.model.Technician;
 import com.example.demo.model.WorkOrder;
+import com.example.demo.repository.StatusHistoryRepository;
 import com.example.demo.repository.TechnicianRepository;
 import com.example.demo.repository.WorkOrderRepository;
 import org.springframework.stereotype.Service;
@@ -13,10 +16,12 @@ import java.time.LocalDateTime;
 public class WorkOrderService {
     private final WorkOrderRepository orderRepository;
     private final TechnicianRepository technicianRepository;
+    private final StatusHistoryRepository statusHistoryRepository;
     
-    public WorkOrderService(WorkOrderRepository orderRepository, TechnicianRepository technicianRepository) {
+    public WorkOrderService(WorkOrderRepository orderRepository, TechnicianRepository technicianRepository, StatusHistoryRepository statusHistoryRepository) {
         this.orderRepository = orderRepository;
         this.technicianRepository = technicianRepository;
+        this.statusHistoryRepository = statusHistoryRepository;
     }
     
     @Transactional
@@ -40,6 +45,27 @@ public class WorkOrderService {
         order.setTechnician(tech);
         order.setUpdatedAt(LocalDateTime.now());
         return mapToResponse(orderRepository.save(order));
+    }
+
+    @Transactional
+    public WorkOrderResponse changeStatus(Long orderId, ChangeStatusRequest request) {
+        WorkOrder order = orderRepository.findById(orderId)
+            .orElseThrow(() -> new RuntimeException("Order not found"));
+            
+        Status previousStatus = order.getStatus();
+        order.setStatus(request.getNewStatus());
+        order.setUpdatedAt(LocalDateTime.now());
+        orderRepository.save(order);
+        
+        StatusHistory history = StatusHistory.builder()
+                .workOrder(order)
+                .previousStatus(previousStatus)
+                .newStatus(request.getNewStatus())
+                .changedAt(LocalDateTime.now())
+                .build();
+        statusHistoryRepository.save(history);
+        
+        return mapToResponse(order);
     }
     
     private WorkOrderResponse mapToResponse(WorkOrder order) {

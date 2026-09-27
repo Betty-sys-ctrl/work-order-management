@@ -13,6 +13,14 @@ public class WorkOrderController {
     private final WorkOrderService service;
     public WorkOrderController(WorkOrderService service) { this.service = service; }
     
+    @GetMapping
+    public org.springframework.data.domain.Page<WorkOrderResponse> searchOrders(
+            @RequestParam(required = false) com.example.demo.model.Status status,
+            @RequestParam(required = false) Long technicianId,
+            org.springframework.data.domain.Pageable pageable) {
+        return service.searchOrders(status, technicianId, pageable);
+    }
+    
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public WorkOrderResponse createOrder(@RequestBody WorkOrderRequest request) {

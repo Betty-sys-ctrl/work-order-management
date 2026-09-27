@@ -36,6 +36,10 @@ public class WorkOrderService {
         this.orderMaterialRepository = orderMaterialRepository;
     }
     
+    public org.springframework.data.domain.Page<WorkOrderResponse> searchOrders(Status status, Long technicianId, org.springframework.data.domain.Pageable pageable) {
+        return orderRepository.findByFilters(status, technicianId, pageable).map(this::mapToResponse);
+    }
+    
     @Transactional
     public WorkOrderResponse createOrder(WorkOrderRequest request) {
         WorkOrder order = WorkOrder.builder()

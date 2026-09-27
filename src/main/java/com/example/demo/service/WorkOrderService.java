@@ -39,6 +39,17 @@ public class WorkOrderService {
     public org.springframework.data.domain.Page<WorkOrderResponse> searchOrders(Status status, Long technicianId, org.springframework.data.domain.Pageable pageable) {
         return orderRepository.findByFilters(status, technicianId, pageable).map(this::mapToResponse);
     }
+
+    public java.util.List<com.example.demo.dto.StatusHistoryResponse> getHistory(Long orderId) {
+        return statusHistoryRepository.findByWorkOrderIdOrderByChangedAtDesc(orderId).stream().map(h -> {
+            com.example.demo.dto.StatusHistoryResponse res = new com.example.demo.dto.StatusHistoryResponse();
+            res.setId(h.getId());
+            res.setPreviousStatus(h.getPreviousStatus());
+            res.setNewStatus(h.getNewStatus());
+            res.setChangedAt(h.getChangedAt());
+            return res;
+        }).collect(java.util.stream.Collectors.toList());
+    }
     
     @Transactional
     public WorkOrderResponse createOrder(WorkOrderRequest request) {

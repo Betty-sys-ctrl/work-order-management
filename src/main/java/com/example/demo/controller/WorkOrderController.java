@@ -13,6 +13,11 @@ public class WorkOrderController {
     private final WorkOrderService service;
     public WorkOrderController(WorkOrderService service) { this.service = service; }
     
+    @GetMapping("/{id}/history")
+    public java.util.List<com.example.demo.dto.StatusHistoryResponse> getHistory(@PathVariable Long id) {
+        return service.getHistory(id);
+    }
+    
     @GetMapping
     public org.springframework.data.domain.Page<WorkOrderResponse> searchOrders(
             @RequestParam(required = false) com.example.demo.model.Status status,

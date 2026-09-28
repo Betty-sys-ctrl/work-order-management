@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, InputLabel, FormControl, Grid } from '@mui/material';
+import { Box, Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, InputLabel, FormControl, Grid, ButtonGroup } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import api from '../api/axiosConfig';
 import { toast } from 'react-toastify';
@@ -188,24 +188,33 @@ export default function Orders() {
                 </TableContainer>
             )}
 
-            <Box display="flex" justifyContent="center" mt={3} gap={2}>
-                <Button 
-                    variant="outlined" 
-                    onClick={() => setPage(page - 1)} 
-                    disabled={page === 0}
-                >
-                    Página Anterior
-                </Button>
-                <Typography sx={{ alignSelf: 'center' }}>
-                    Página {page + 1} de {totalPages}
+            <Box display="flex" justifyContent="space-between" alignItems="center" mt={3}>
+                <Typography variant="body2" color="textSecondary">
+                    Mostrando página {page + 1} de {totalPages}
                 </Typography>
-                <Button 
-                    variant="outlined" 
-                    onClick={() => setPage(page + 1)} 
-                    disabled={page >= totalPages - 1}
-                >
-                    Página Siguiente
-                </Button>
+                <ButtonGroup variant="outlined" color="primary">
+                    <Button 
+                        onClick={() => setPage(page - 1)} 
+                        disabled={page === 0}
+                    >
+                        Anterior
+                    </Button>
+                    {Array.from({ length: totalPages }, (_, i) => (
+                        <Button 
+                            key={i} 
+                            onClick={() => setPage(i)} 
+                            variant={page === i ? 'contained' : 'outlined'}
+                        >
+                            {i + 1}
+                        </Button>
+                    ))}
+                    <Button 
+                        onClick={() => setPage(page + 1)} 
+                        disabled={page >= totalPages - 1}
+                    >
+                        Siguiente
+                    </Button>
+                </ButtonGroup>
             </Box>
 
             <Dialog open={modalOpen} onClose={handleClose}>

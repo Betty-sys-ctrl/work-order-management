@@ -1,39 +1,57 @@
-﻿# Work Order Management System
+﻿# Sistema de Gestión de Órdenes de Trabajo
 
 ## Descripción
-El **Sistema de Gestión de Órdenes de Trabajo** es una API RESTful robusta diseñada para coordinar y administrar órdenes de servicio, asignar técnicos, controlar historiales de estado y gestionar el consumo y stock de materiales utilizados en cada orden de trabajo.
+El **Sistema de Gestión de Órdenes de Trabajo** es una plataforma integral (Backend + Frontend) diseñada para coordinar y administrar órdenes de servicio, asignar técnicos, controlar historiales de estado y gestionar el consumo y stock de materiales en cada orden de trabajo.
 
 ## Stack Tecnológico
-- **Lenguaje:** Java 21
-- **Framework:** Spring Boot 3.4
-- **Base de Datos:** PostgreSQL 16
-- **Contenedores:** Docker & Docker Compose
-- **Dependencias Principales:** Maven, Spring Data JPA, Hibernate, Jakarta Validation, Lombok, Spring Security, JWT (JJWT), DataFaker.
+**Backend:**
+- Java 21, Spring Boot 3.4
+- Spring Security, JWT, Spring Data JPA, Hibernate, PostgreSQL 16
+- Maven, Docker & Docker Compose
 
-## Requisitos Previos
-- **Java Development Kit (JDK):** Versión 21 o superior.
-- **Docker Desktop:** Para ejecutar el contenedor de base de datos PostgreSQL localmente.
+**Frontend:**
+- **React (v18)** y **Vite**
+- **Material-UI (MUI)** para componentes visuales y diseño responsivo
+- **React Router** para enrutamiento de vistas SPA
+- **Axios** para consumo de API REST
+- **React Toastify** para notificaciones interactivas
 
-## Instalación y Ejecución
+## Instrucciones de Ejecución Conjunta
 
-### 1. Ejecutar la Aplicación (Zero-Touch Initialization)
-Gracias a la integración con spring-boot-docker-compose, el único requisito es tener **Docker Desktop abierto**. Al ejecutar la aplicación, Spring Boot detectará automáticamente el archivo docker-compose.yml, levantará el contenedor de PostgreSQL y lo detendrá al finalizar la ejecución.
+### 1. Requisitos Previos
+- **Java 21**
+- **Node.js** (v18+)
+- **Docker Desktop** (para PostgreSQL) abierto y en ejecución.
 
-La base de datos se poblará de forma automática (Data Seeding) con **50 registros de prueba de técnicos y materiales** (garantizando entropía y resolviendo unicidad con UUIDs) para que la colección de Postman funcione sin intervención manual. Adicionalmente, se creará un usuario administrador por defecto con las siguientes credenciales:
-- **Usuario:** dmin
-- **Contraseña:** dmin123
+### 2. Levantar el Backend
+Gracias a la integración con spring-boot-docker-compose, Spring Boot levantará automáticamente el contenedor de PostgreSQL y lo detendrá al finalizar. La base de datos se poblará automáticamente mediante un Seeder seguro (Data Seeding).
 
-Ejecuta:
-\\\ash
+En una terminal, ejecuta:
+`ash
 ./mvnw clean compile
 ./mvnw spring-boot:run
-\\\
-> **Nota:** La aplicación se inicializará y estará escuchando peticiones en **http://localhost:8081**. Hibernate creará automáticamente las tablas necesarias al iniciar la aplicación.
+`
+> La API estará escuchando en **http://localhost:8081**.
 
-## Pruebas de API
-Se incluye una colección lista para importar en Postman y probar los endpoints de la API. La API ahora es **privada y está protegida por JWT**.
-1. Abre Postman.
-2. Haz clic en **Import** y selecciona el archivo \WorkOrders_Postman_Collection.json\ ubicado en la raíz del proyecto.
-3. La colección incluye una variable de entorno \{{base_url}}\ apuntando a \http://localhost:8081\.
-4. **IMPORTANTE:** Ve a la carpeta **Auth** y ejecuta la petición **Login**. Esta petición tiene preconfiguradas las credenciales del administrador y un script inteligente que capturará automáticamente el JWT de la respuesta y lo guardará en las variables de la colección (\{{jwt_token}}\). De esta forma, el resto de las peticiones de la colección heredarán automáticamente el token \Bearer\ sin que tengas que copiar y pegar nada.
-5. Puedes utilizar la opción 'Run All' o 'Run Collection' de Postman para probar el flujo de negocio completo de una sola vez.
+### 3. Levantar el Frontend
+En una **terminal separada**, dirígete a la carpeta rontend y lanza el servidor de desarrollo de Vite:
+
+`ash
+cd frontend
+npm install
+npm run dev
+`
+> La interfaz web estará disponible en **http://localhost:5173**.
+
+### 4. Credenciales por Defecto (Acceso)
+Para acceder a la plataforma (tanto en el portal web como en la colección de Postman), utiliza las credenciales generadas automáticamente por el Database Seeder:
+- **Usuario:** admin
+- **Contraseña:** admin123
+
+## Pruebas de API (Postman)
+En la raíz del proyecto encontrarás el archivo WorkOrderManagement.postman_collection.json.
+Contiene ejemplos estructurados, incluyendo:
+- Endpoint de Autenticación (POST /api/auth/login)
+- Métricas del Dashboard (GET /api/metrics/dashboard)
+- Operaciones de Órdenes (Asignar Técnico, Consumir Material, Transicionar Estado)
+- Catálogos paginados (?page=0&size=20) para orders, 	echnicians y materials.

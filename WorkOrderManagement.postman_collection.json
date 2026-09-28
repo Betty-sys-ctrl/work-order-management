@@ -1,0 +1,100 @@
+﻿{
+    "info": {
+        "name": "Work Order Management",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Auth",
+            "item": [
+                {
+                    "name": "Login",
+                    "request": {
+                        "method": "POST",
+                        "header": [
+                            {"key": "Content-Type", "value": "application/json"}
+                        ],
+                        "body": {
+                            "mode": "raw",
+                            "raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+                        },
+                        "url": {"raw": "http://localhost:8081/api/auth/login", "protocol": "http", "host": ["localhost"], "port": "8081", "path": ["api", "auth", "login"]}
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Dashboard",
+            "item": [
+                {
+                    "name": "Get Metrics",
+                    "request": {
+                        "method": "GET",
+                        "url": {"raw": "http://localhost:8081/api/metrics/dashboard", "protocol": "http", "host": ["localhost"], "port": "8081", "path": ["api", "metrics", "dashboard"]}
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Orders",
+            "item": [
+                {
+                    "name": "Get Orders",
+                    "request": {
+                        "method": "GET",
+                        "url": {"raw": "http://localhost:8081/api/orders?page=0&size=20", "protocol": "http", "host": ["localhost"], "port": "8081", "path": ["api", "orders"], "query": [{"key": "page", "value": "0"}, {"key": "size", "value": "20"}]}
+                    }
+                },
+                {
+                    "name": "Assign Technician",
+                    "request": {
+                        "method": "PUT",
+                        "url": {"raw": "http://localhost:8081/api/orders/1/assign/1", "protocol": "http", "host": ["localhost"], "port": "8081", "path": ["api", "orders", "1", "assign", "1"]}
+                    }
+                },
+                {
+                    "name": "Consume Material",
+                    "request": {
+                        "method": "POST",
+                        "header": [{"key": "Content-Type", "value": "application/json"}],
+                        "body": {"mode": "raw", "raw": "{\n    \"materialId\": 1,\n    \"quantityUsed\": 5\n}"},
+                        "url": {"raw": "http://localhost:8081/api/orders/1/materials", "protocol": "http", "host": ["localhost"], "port": "8081", "path": ["api", "orders", "1", "materials"]}
+                    }
+                },
+                {
+                    "name": "Change Status",
+                    "request": {
+                        "method": "PUT",
+                        "header": [{"key": "Content-Type", "value": "application/json"}],
+                        "body": {"mode": "raw", "raw": "{\n    \"newStatus\": \"IN_PROGRESS\"\n}"},
+                        "url": {"raw": "http://localhost:8081/api/orders/1/status", "protocol": "http", "host": ["localhost"], "port": "8081", "path": ["api", "orders", "1", "status"]}
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Technicians",
+            "item": [
+                {
+                    "name": "Get Technicians",
+                    "request": {
+                        "method": "GET",
+                        "url": {"raw": "http://localhost:8081/api/technicians?page=0&size=20", "protocol": "http", "host": ["localhost"], "port": "8081", "path": ["api", "technicians"], "query": [{"key": "page", "value": "0"}, {"key": "size", "value": "20"}]}
+                    }
+                }
+            ]
+        },
+        {
+            "name": "Materials",
+            "item": [
+                {
+                    "name": "Get Materials",
+                    "request": {
+                        "method": "GET",
+                        "url": {"raw": "http://localhost:8081/api/materials?page=0&size=20", "protocol": "http", "host": ["localhost"], "port": "8081", "path": ["api", "materials"], "query": [{"key": "page", "value": "0"}, {"key": "size", "value": "20"}]}
+                    }
+                }
+            ]
+        }
+    ]
+}

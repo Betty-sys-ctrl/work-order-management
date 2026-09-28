@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, InputLabel, FormControl, Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import api from '../api/axiosConfig';
@@ -6,6 +7,7 @@ import { toast } from 'react-toastify';
 import Pagination from '../components/Pagination';
 
 export default function Orders() {
+    const navigate = useNavigate();
     const [orders, setOrders] = useState([]);
     const [technicians, setTechnicians] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -165,6 +167,7 @@ export default function Orders() {
                                 <TableCell>Estado</TableCell>
                                 <TableCell>ID Técnico</TableCell>
                                 <TableCell>Fecha Creación</TableCell>
+                                <TableCell>Acciones</TableCell>
                             </TableRow>
                         </TableHead>
                         <TableBody>
@@ -176,6 +179,11 @@ export default function Orders() {
                                     <TableCell>{order.status}</TableCell>
                                     <TableCell>{order.technicianId || 'Sin Asignar'}</TableCell>
                                     <TableCell>{order.createdAt ? new Date(order.createdAt).toLocaleString('es-ES') : ''}</TableCell>
+                                    <TableCell>
+                                        <Button variant="outlined" size="small" onClick={() => navigate(`/orders/${order.id}`)}>
+                                            Ver Detalle
+                                        </Button>
+                                    </TableCell>
                                 </TableRow>
                             ))}
                             {orders.length === 0 && (

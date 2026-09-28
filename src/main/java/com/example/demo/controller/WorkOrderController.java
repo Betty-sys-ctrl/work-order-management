@@ -19,6 +19,11 @@ public class WorkOrderController {
         return service.getHistory(id);
     }
     
+    @GetMapping("/{id}")
+    public WorkOrderResponse getOrderById(@PathVariable Long id) {
+        return service.getOrderById(id);
+    }
+    
     @GetMapping
     public org.springframework.data.domain.Page<WorkOrderResponse> searchOrders(
             @RequestParam(required = false) com.example.demo.model.Status status,

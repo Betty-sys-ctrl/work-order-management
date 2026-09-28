@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Technicians from './pages/Technicians';
 import Materials from './pages/Materials';
 import Orders from './pages/Orders';
+import OrderDetail from './pages/OrderDetail';
 
 export default function App() {
   return (
@@ -26,6 +27,7 @@ export default function App() {
               <Route path="/technicians" element={<Technicians />} />
               <Route path="/materials" element={<Materials />} />
               <Route path="/orders" element={<Orders />} />
+              <Route path="/orders/:id" element={<OrderDetail />} />
             </Route>
           </Route>
         </Routes>

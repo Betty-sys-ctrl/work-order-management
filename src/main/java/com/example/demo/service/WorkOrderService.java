@@ -40,6 +40,11 @@ public class WorkOrderService {
         return orderRepository.findByFilters(status, technicianId, pageable).map(this::mapToResponse);
     }
 
+    public WorkOrderResponse getOrderById(Long id) {
+        WorkOrder order = orderRepository.findById(id).orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Order not found"));
+        return mapToResponse(order);
+    }
+
     public java.util.List<com.example.demo.dto.StatusHistoryResponse> getHistory(Long orderId) {
         return statusHistoryRepository.findByWorkOrderIdOrderByChangedAtDesc(orderId).stream().map(h -> {
             com.example.demo.dto.StatusHistoryResponse res = new com.example.demo.dto.StatusHistoryResponse();

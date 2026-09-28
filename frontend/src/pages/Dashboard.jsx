@@ -73,7 +73,7 @@ export default function Dashboard() {
                     <Card>
                         <CardContent>
                             <Typography variant="h6" gutterBottom color="error">
-                                Alertas de Inventario (Stock Bajo < 20)
+                                Alertas de Inventario (Stock Bajo &lt; 20)
                             </Typography>
                             {metrics.lowStockMaterials.length === 0 ? (
                                 <Typography>No hay materiales con stock bajo.</Typography>

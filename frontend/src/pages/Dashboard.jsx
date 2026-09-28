@@ -14,8 +14,9 @@ export default function Dashboard() {
                 const response = await api.get('/api/metrics/dashboard');
                 setMetrics(response.data);
             } catch (err) {
+                console.error(err.response || err);
                 setError(true);
-                toast.error('Error al cargar mÃ©tricas del dashboard');
+                toast.error('Error al cargar métricas del panel de control');
             } finally {
                 setLoading(false);
             }
@@ -34,7 +35,7 @@ export default function Dashboard() {
     if (error) {
         return (
             <Box m={2}>
-                <Alert severity="error">No se pudieron cargar las mÃ©tricas. Intente mÃ¡s tarde.</Alert>
+                <Alert severity="error">No se pudieron cargar las métricas. Intente más tarde.</Alert>
             </Box>
         );
     }
@@ -42,14 +43,14 @@ export default function Dashboard() {
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Typography variant="h4" gutterBottom>
-                Dashboard
+                Panel de Control
             </Typography>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
                     <Card sx={{ bgcolor: '#e3f2fd' }}>
                         <CardContent>
                             <Typography color="textSecondary" gutterBottom>
-                                Ã“rdenes Activas (Pendiente / En Progreso)
+                                Órdenes Activas (Pendiente / En Progreso)
                             </Typography>
                             <Typography variant="h3" component="h2">
                                 {metrics.activeOrdersCount}
@@ -61,7 +62,7 @@ export default function Dashboard() {
                     <Card sx={{ bgcolor: '#e8f5e9' }}>
                         <CardContent>
                             <Typography color="textSecondary" gutterBottom>
-                                TÃ©cnicos Activos
+                                Técnicos Activos
                             </Typography>
                             <Typography variant="h3" component="h2">
                                 {metrics.activeTechniciansCount}

@@ -18,7 +18,7 @@ export default function Technicians() {
             setTechnicians(response.data);
         } catch (error) {
             console.error(error.response || error);
-            toast.error('Error al cargar tÃ©cnicos');
+            toast.error('Error al cargar técnicos');
         } finally {
             setLoading(false);
         }
@@ -48,16 +48,16 @@ export default function Technicians() {
         try {
             if (currentTech.id) {
                 await api.put(`/api/technicians/${currentTech.id}`, currentTech);
-                toast.success('TÃ©cnico actualizado');
+                toast.success('Técnico actualizado');
             } else {
                 await api.post('/api/technicians', currentTech);
-                toast.success('TÃ©cnico creado');
+                toast.success('Técnico creado');
             }
             handleClose();
             fetchTechnicians();
         } catch (error) {
             console.error(error.response || error);
-            toast.error('Error al guardar tÃ©cnico');
+            toast.error('Error al guardar técnico');
         } finally {
             setSaving(false);
         }
@@ -71,16 +71,16 @@ export default function Technicians() {
             fetchTechnicians();
         } catch (error) {
             console.error(error.response || error);
-            toast.error('Error al cambiar estado del tÃ©cnico');
+            toast.error('Error al cambiar estado del técnico');
         }
     };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h4">TÃ©cnicos</Typography>
+                <Typography variant="h4">Técnicos</Typography>
                 <Button variant="contained" color="primary" onClick={() => handleOpen()}>
-                    Registrar TÃ©cnico
+                    Registrar Técnico
                 </Button>
             </Box>
 
@@ -95,7 +95,7 @@ export default function Technicians() {
                             <TableRow>
                                 <TableCell>ID</TableCell>
                                 <TableCell>Nombre</TableCell>
-                                <TableCell>Email</TableCell>
+                                <TableCell>Correo</TableCell>
                                 <TableCell>Especialidad</TableCell>
                                 <TableCell>Activo</TableCell>
                                 <TableCell>Acciones</TableCell>
@@ -128,7 +128,7 @@ export default function Technicians() {
             )}
 
             <Dialog open={modalOpen} onClose={handleClose}>
-                <DialogTitle>{currentTech.id ? 'Editar TÃ©cnico' : 'Registrar TÃ©cnico'}</DialogTitle>
+                <DialogTitle>{currentTech.id ? 'Editar Técnico' : 'Registrar Técnico'}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus
@@ -141,7 +141,7 @@ export default function Technicians() {
                     />
                     <TextField
                         margin="dense"
-                        label="Email"
+                        label="Correo"
                         name="email"
                         fullWidth
                         value={currentTech.email}

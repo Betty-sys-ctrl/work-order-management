@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../api/axiosConfig';
 import { toast } from 'react-toastify';
@@ -16,7 +16,7 @@ export default function Login() {
         try {
             const response = await api.post('/api/auth/login', { username, password });
             localStorage.setItem('jwt_token', response.data.token);
-            toast.success('Login exitoso');
+            toast.success('Inicio de sesión exitoso');
             navigate('/');
         } catch (error) {
             toast.error('Credenciales inválidas');
@@ -29,12 +29,12 @@ export default function Login() {
         <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#f5f5f5">
             <Paper elevation={3} sx={{ p: 4, width: '100%', maxWidth: 400 }}>
                 <Typography variant="h5" component="h1" gutterBottom align="center">
-                    Work Order System
+                    Gestión de Órdenes
                 </Typography>
                 <form onSubmit={handleSubmit}>
                     <TextField
                         fullWidth
-                        label="Username"
+                        label="Usuario"
                         margin="normal"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
@@ -42,7 +42,7 @@ export default function Login() {
                     />
                     <TextField
                         fullWidth
-                        label="Password"
+                        label="Contraseña"
                         type="password"
                         margin="normal"
                         value={password}
@@ -57,7 +57,7 @@ export default function Login() {
                             type="submit"
                             disabled={loading}
                         >
-                            {loading ? <CircularProgress size={24} /> : 'Login'}
+                            {loading ? <CircularProgress size={24} /> : 'Ingresar'}
                         </Button>
                     </Box>
                 </form>

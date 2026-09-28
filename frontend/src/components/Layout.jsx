@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, AppBar, Toolbar, Typography, Button } from '@mui/material';
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -21,9 +21,9 @@ export default function Layout() {
             <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
                 <Toolbar>
                     <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-                        Work Order Management
+                        Gestión de Órdenes
                     </Typography>
-                    <Button color="inherit" onClick={handleLogout}>Logout</Button>
+                    <Button color="inherit" onClick={handleLogout}>Cerrar Sesión</Button>
                 </Toolbar>
             </AppBar>
             <Drawer
@@ -39,7 +39,7 @@ export default function Layout() {
                     <List>
                         <ListItem button component={Link} to="/">
                             <ListItemIcon><DashboardIcon /></ListItemIcon>
-                            <ListItemText primary="Dashboard" />
+                            <ListItemText primary="Panel de Control" />
                         </ListItem>
                         <ListItem button component={Link} to="/technicians">
                             <ListItemIcon><PeopleIcon /></ListItemIcon>

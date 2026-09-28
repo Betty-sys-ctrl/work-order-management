@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -7,11 +7,10 @@ import Login from './pages/Login';
 import Layout from './components/Layout';
 import ProtectedRoute from './components/ProtectedRoute';
 
-// Dummy components para Fase 1
 import Dashboard from './pages/Dashboard';
 import Technicians from './pages/Technicians';
-const Materials = () => <h2>Materiales Placeholder</h2>;
-const Orders = () => <h2>Ãƒâ€œrdenes Placeholder</h2>;
+const Materials = () => <h2>Materiales</h2>;
+const Orders = () => <h2>Órdenes</h2>;
 
 export default function App() {
   return (

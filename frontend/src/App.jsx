@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -9,7 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 import Dashboard from './pages/Dashboard';
 import Technicians from './pages/Technicians';
-const Materials = () => <h2>Materiales</h2>;
+import Materials from './pages/Materials';
 const Orders = () => <h2>Órdenes</h2>;
 
 export default function App() {

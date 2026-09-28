@@ -31,18 +31,18 @@ public class MetricsController {
         
         List<DashboardMetricsDTO.MaterialStockDTO> lowStock = materialRepository.findByStockQuantityLessThan(20)
                 .stream()
-                .map(m -> DashboardMetricsDTO.MaterialStockDTO.builder()
-                        .id(m.getId())
-                        .name(m.getName())
-                        .sku(m.getSku())
-                        .stockQuantity(m.getStockQuantity())
-                        .build())
+                .map(m -> new DashboardMetricsDTO.MaterialStockDTO(
+                        m.getId(),
+                        m.getName(),
+                        m.getSku(),
+                        m.getStockQuantity()
+                ))
                 .collect(Collectors.toList());
 
-        return DashboardMetricsDTO.builder()
-                .activeOrdersCount(activeOrders)
-                .activeTechniciansCount(activeTechs)
-                .lowStockMaterials(lowStock)
-                .build();
+        return new DashboardMetricsDTO(
+                activeOrders,
+                activeTechs,
+                lowStock
+        );
     }
 }

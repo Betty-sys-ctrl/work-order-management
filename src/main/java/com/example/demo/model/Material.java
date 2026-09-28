@@ -4,8 +4,7 @@ import lombok.*;
 import java.util.List;
 @Entity
 @Getter
-@Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class Material {
+@Setter @NoArgsConstructor @AllArgsConstructor public class Material {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;

@@ -5,8 +5,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 @Entity
 @Getter
-@Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class WorkOrder {
+@Setter @NoArgsConstructor @AllArgsConstructor public class WorkOrder {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;

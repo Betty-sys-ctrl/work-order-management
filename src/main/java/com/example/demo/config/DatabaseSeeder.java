@@ -38,11 +38,13 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (systemUserRepository.count() == 0) {
-            SystemUser admin = SystemUser.builder().username("admin").password(passwordEncoder.encode("admin123")).build();
+            SystemUser admin = new SystemUser();
+            admin.setUsername("admin");
+            admin.setPassword(passwordEncoder.encode("admin123"));
             systemUserRepository.save(admin);
             log.info("Data Seeding: Usuario administrador por defecto creado.");
         } else {
-            log.info("La tabla de Usuarios ya estÃ¡ poblada. Omitiendo siembra.");
+            log.info("La tabla de Usuarios ya estÃƒÂ¡ poblada. Omitiendo siembra.");
         }
 
         if (technicianRepository.count() == 0) {
@@ -51,33 +53,24 @@ public class DatabaseSeeder implements CommandLineRunner {
                 String firstName = faker.name().firstName();
                 String lastName = faker.name().lastName();
                 String uniqueHash = UUID.randomUUID().toString().substring(0,4);
-                technicians.add(Technician.builder()
-                        .name(firstName + " " + lastName)
-                        .email(firstName.toLowerCase() + "." + lastName.toLowerCase() + uniqueHash + "@example.com")
-                        .specialty(faker.job().position())
-                        .active(true)
-                        .build());
+                technicians.add(new Technician(null, firstName + " " + lastName, firstName.toLowerCase() + "." + lastName.toLowerCase() + uniqueHash + "@example.com", faker.job().position(), true, null));
             }
             technicianRepository.saveAll(technicians);
-            log.info("Data Seeding: 50 TÃ©cnicos insertados.");
+            log.info("Data Seeding: 50 TÃƒÂ©cnicos insertados.");
         } else {
-            log.info("La tabla de TÃ©cnicos ya estÃ¡ poblada. Omitiendo siembra.");
+            log.info("La tabla de TÃƒÂ©cnicos ya estÃƒÂ¡ poblada. Omitiendo siembra.");
         }
 
         if (materialRepository.count() == 0) {
             List<Material> materials = new ArrayList<>();
             for (int i = 0; i < 50; i++) {
                 String uniqueHash = UUID.randomUUID().toString().substring(0,4).toUpperCase();
-                materials.add(Material.builder()
-                        .name(faker.commerce().productName())
-                        .sku(faker.regexify("[A-Z0-9]{4}") + uniqueHash)
-                        .stockQuantity(faker.number().numberBetween(10, 501))
-                        .build());
+                materials.add(new Material(null, faker.commerce().productName(), faker.regexify("[A-Z0-9]{4}") + uniqueHash, faker.number().numberBetween(10, 501), null));
             }
             materialRepository.saveAll(materials);
             log.info("Data Seeding: 50 Materiales insertados.");
         } else {
-            log.info("La tabla de Materiales ya estÃ¡ poblada. Omitiendo siembra.");
+            log.info("La tabla de Materiales ya estÃƒÂ¡ poblada. Omitiendo siembra.");
         }
     }
 }

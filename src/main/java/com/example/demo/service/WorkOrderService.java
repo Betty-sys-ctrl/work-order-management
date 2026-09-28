@@ -58,13 +58,12 @@ public class WorkOrderService {
     
     @Transactional
     public WorkOrderResponse createOrder(WorkOrderRequest request) {
-        WorkOrder order = WorkOrder.builder()
-                .title(request.getTitle())
-                .description(request.getDescription())
-                .status(Status.PENDING)
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now())
-                .build();
+        WorkOrder order = new WorkOrder();
+        order.setTitle(request.getTitle());
+        order.setDescription(request.getDescription());
+        order.setStatus(Status.PENDING);
+        order.setCreatedAt(LocalDateTime.now());
+        order.setUpdatedAt(LocalDateTime.now());
         return mapToResponse(orderRepository.save(order));
     }
     
@@ -89,12 +88,11 @@ public class WorkOrderService {
         order.setUpdatedAt(LocalDateTime.now());
         orderRepository.save(order);
         
-        StatusHistory history = StatusHistory.builder()
-                .workOrder(order)
-                .previousStatus(previousStatus)
-                .newStatus(request.getNewStatus())
-                .changedAt(LocalDateTime.now())
-                .build();
+        StatusHistory history = new StatusHistory();
+        history.setWorkOrder(order);
+        history.setPreviousStatus(previousStatus);
+        history.setNewStatus(request.getNewStatus());
+        history.setChangedAt(LocalDateTime.now());
         statusHistoryRepository.save(history);
         
         return mapToResponse(order);
@@ -115,11 +113,10 @@ public class WorkOrderService {
         material.setStockQuantity(material.getStockQuantity() - request.getQuantityUsed());
         materialRepository.save(material);
         
-        OrderMaterial orderMaterial = OrderMaterial.builder()
-                .workOrder(order)
-                .material(material)
-                .quantityUsed(request.getQuantityUsed())
-                .build();
+        OrderMaterial orderMaterial = new OrderMaterial();
+        orderMaterial.setWorkOrder(order);
+        orderMaterial.setMaterial(material);
+        orderMaterial.setQuantityUsed(request.getQuantityUsed());
         orderMaterialRepository.save(orderMaterial);
         
         OrderMaterialResponse res = new OrderMaterialResponse();

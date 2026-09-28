@@ -25,12 +25,11 @@ public class TechnicianService {
     
     @Transactional
     public TechnicianResponse create(TechnicianRequest request) {
-        Technician tech = Technician.builder()
-                .name(request.getName())
-                .email(request.getEmail())
-                .specialty(request.getSpecialty())
-                .active(request.getActive() != null ? request.getActive() : true)
-                .build();
+        Technician tech = new Technician();
+        tech.setName(request.getName());
+        tech.setEmail(request.getEmail());
+        tech.setSpecialty(request.getSpecialty());
+        tech.setActive(request.getActive() != null ? request.getActive() : true);
         return mapToResponse(repository.save(tech));
     }
     

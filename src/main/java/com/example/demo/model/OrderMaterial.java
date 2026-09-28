@@ -3,8 +3,7 @@ import jakarta.persistence.*;
 import lombok.*;
 @Entity
 @Getter
-@Setter @NoArgsConstructor @AllArgsConstructor @Builder
-public class OrderMaterial {
+@Setter @NoArgsConstructor @AllArgsConstructor public class OrderMaterial {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Integer quantityUsed;

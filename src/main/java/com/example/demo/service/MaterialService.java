@@ -24,11 +24,10 @@ public class MaterialService {
     
     @Transactional
     public MaterialResponse create(MaterialRequest request) {
-        Material mat = Material.builder()
-                .name(request.getName())
-                .sku(request.getSku())
-                .stockQuantity(request.getStockQuantity() != null ? request.getStockQuantity() : 0)
-                .build();
+        Material mat = new Material();
+        mat.setName(request.getName());
+        mat.setSku(request.getSku());
+        mat.setStockQuantity(request.getStockQuantity() != null ? request.getStockQuantity() : 0);
         return mapToResponse(repository.save(mat));
     }
     

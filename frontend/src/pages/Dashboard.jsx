@@ -84,7 +84,7 @@ export default function Dashboard() {
                                             <ListItem>
                                                 <ListItemText 
                                                     primary={mat.name} 
-                                                    secondary={\SKU: \ | Stock Actual: \\} 
+                                                    secondary={`SKU: ${mat.sku} | Stock Actual: ${mat.stockQuantity}`} 
                                                 />
                                             </ListItem>
                                             {index < metrics.lowStockMaterials.length - 1 && <Divider />}

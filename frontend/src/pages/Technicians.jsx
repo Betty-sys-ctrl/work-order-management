@@ -18,7 +18,7 @@ export default function Technicians() {
             setTechnicians(response.data);
         } catch (error) {
             console.error(error.response || error);
-            toast.error('Error al cargar técnicos');
+            toast.error('Error al cargar tÃ©cnicos');
         } finally {
             setLoading(false);
         }
@@ -47,17 +47,17 @@ export default function Technicians() {
         setSaving(true);
         try {
             if (currentTech.id) {
-                await api.put(\/api/technicians/\\, currentTech);
-                toast.success('Técnico actualizado');
+                await api.put(`/api/technicians/${currentTech.id}`, currentTech);
+                toast.success('TÃ©cnico actualizado');
             } else {
                 await api.post('/api/technicians', currentTech);
-                toast.success('Técnico creado');
+                toast.success('TÃ©cnico creado');
             }
             handleClose();
             fetchTechnicians();
         } catch (error) {
             console.error(error.response || error);
-            toast.error('Error al guardar técnico');
+            toast.error('Error al guardar tÃ©cnico');
         } finally {
             setSaving(false);
         }
@@ -66,21 +66,21 @@ export default function Technicians() {
     const handleToggleActive = async (tech) => {
         try {
             const updatedTech = { ...tech, active: !tech.active };
-            await api.put(\/api/technicians/\\, updatedTech);
-            toast.success(\Técnico \\);
+            await api.put(`/api/technicians/${tech.id}`, updatedTech);
+            toast.success(`Técnico ${updatedTech.active ? "activado" : "inactivado"}`);
             fetchTechnicians();
         } catch (error) {
             console.error(error.response || error);
-            toast.error('Error al cambiar estado del técnico');
+            toast.error('Error al cambiar estado del tÃ©cnico');
         }
     };
 
     return (
         <Box sx={{ flexGrow: 1 }}>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-                <Typography variant="h4">Técnicos</Typography>
+                <Typography variant="h4">TÃ©cnicos</Typography>
                 <Button variant="contained" color="primary" onClick={() => handleOpen()}>
-                    Registrar Técnico
+                    Registrar TÃ©cnico
                 </Button>
             </Box>
 
@@ -128,7 +128,7 @@ export default function Technicians() {
             )}
 
             <Dialog open={modalOpen} onClose={handleClose}>
-                <DialogTitle>{currentTech.id ? 'Editar Técnico' : 'Registrar Técnico'}</DialogTitle>
+                <DialogTitle>{currentTech.id ? 'Editar TÃ©cnico' : 'Registrar TÃ©cnico'}</DialogTitle>
                 <DialogContent>
                     <TextField
                         autoFocus

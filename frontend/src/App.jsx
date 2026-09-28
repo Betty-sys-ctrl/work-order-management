@@ -9,7 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // Dummy components para Fase 1
 import Dashboard from './pages/Dashboard';
-const Technicians = () => <h2>TÃƒÂ©cnicos Placeholder</h2>;
+import Technicians from './pages/Technicians';
 const Materials = () => <h2>Materiales Placeholder</h2>;
 const Orders = () => <h2>Ãƒâ€œrdenes Placeholder</h2>;
 

@@ -9,9 +9,9 @@ import ProtectedRoute from './components/ProtectedRoute';
 
 // Dummy components para Fase 1
 import Dashboard from './pages/Dashboard';
-const Technicians = () => <h2>TÃ©cnicos Placeholder</h2>;
+const Technicians = () => <h2>TÃƒÂ©cnicos Placeholder</h2>;
 const Materials = () => <h2>Materiales Placeholder</h2>;
-const Orders = () => <h2>Ã“rdenes Placeholder</h2>;
+const Orders = () => <h2>Ãƒâ€œrdenes Placeholder</h2>;
 
 export default function App() {
   return (

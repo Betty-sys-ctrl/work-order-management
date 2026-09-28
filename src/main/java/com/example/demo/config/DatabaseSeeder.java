@@ -15,7 +15,6 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.regex.Pattern;
 
 @Slf4j
 @Component
@@ -38,104 +37,47 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        seedAdmin();
-        seedTechnicians();
-        seedMaterials();
-        log.info("Sembrado exitoso. Total en BD -> Técnicos: {}, Materiales: {}", 
-                 technicianRepository.count(), materialRepository.count());
-    }
-
-    private void seedAdmin() {
         if (systemUserRepository.count() == 0) {
             SystemUser admin = SystemUser.builder().username("admin").password(passwordEncoder.encode("admin123")).build();
             systemUserRepository.save(admin);
-            log.info("✅ Data Seeding: Default admin user created.");
+            log.info("✅ Data Seeding: Usuario administrador por defecto creado.");
+        } else {
+            log.info("La tabla de Usuarios ya está poblada. Omitiendo siembra.");
         }
-    }
 
-    private void seedTechnicians() {
         if (technicianRepository.count() == 0) {
             List<Technician> technicians = new ArrayList<>();
             for (int i = 0; i < 50; i++) {
-                technicians.add(generateTechnician());
+                String firstName = faker.name().firstName();
+                String lastName = faker.name().lastName();
+                String uniqueHash = UUID.randomUUID().toString().substring(0,4);
+                technicians.add(Technician.builder()
+                        .name(firstName + " " + lastName)
+                        .email(firstName.toLowerCase() + "." + lastName.toLowerCase() + uniqueHash + "@example.com")
+                        .specialty(faker.job().position())
+                        .active(true)
+                        .build());
             }
             technicianRepository.saveAll(technicians);
+            log.info("✅ Data Seeding: 50 Técnicos insertados.");
         } else {
-            List<Technician> existing = technicianRepository.findAll();
-            boolean updated = false;
-            for (Technician tech : existing) {
-                if (!isValidTechnician(tech)) {
-                    Technician generated = generateTechnician();
-                    tech.setName(generated.getName());
-                    tech.setEmail(generated.getEmail());
-                    tech.setSpecialty(generated.getSpecialty());
-                    tech.setActive(generated.getActive());
-                    updated = true;
-                }
-            }
-            if (updated) {
-                technicianRepository.saveAll(existing);
-            }
+            log.info("La tabla de Técnicos ya está poblada. Omitiendo siembra.");
         }
-    }
 
-    private void seedMaterials() {
         if (materialRepository.count() == 0) {
             List<Material> materials = new ArrayList<>();
             for (int i = 0; i < 50; i++) {
-                materials.add(generateMaterial());
+                String uniqueHash = UUID.randomUUID().toString().substring(0,4).toUpperCase();
+                materials.add(Material.builder()
+                        .name(faker.commerce().productName())
+                        .sku(faker.regexify("[A-Z0-9]{4}") + uniqueHash)
+                        .stockQuantity(faker.number().numberBetween(10, 501))
+                        .build());
             }
             materialRepository.saveAll(materials);
+            log.info("✅ Data Seeding: 50 Materiales insertados.");
         } else {
-            List<Material> existing = materialRepository.findAll();
-            boolean updated = false;
-            for (Material mat : existing) {
-                if (!isValidMaterial(mat)) {
-                    Material generated = generateMaterial();
-                    mat.setName(generated.getName());
-                    mat.setSku(generated.getSku());
-                    mat.setStockQuantity(generated.getStockQuantity());
-                    updated = true;
-                }
-            }
-            if (updated) {
-                materialRepository.saveAll(existing);
-            }
+            log.info("La tabla de Materiales ya está poblada. Omitiendo siembra.");
         }
-    }
-
-    private Technician generateTechnician() {
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String uniqueHash = UUID.randomUUID().toString().substring(0,4);
-        return Technician.builder()
-                .name(firstName + " " + lastName)
-                .email(firstName.toLowerCase() + "." + lastName.toLowerCase() + uniqueHash + "@example.com")
-                .specialty(faker.job().position())
-                .active(true)
-                .build();
-    }
-
-    private Material generateMaterial() {
-        String uniqueHash = UUID.randomUUID().toString().substring(0,4).toUpperCase();
-        return Material.builder()
-                .name(faker.commerce().productName())
-                .sku(faker.regexify("[A-Z0-9]{4}") + uniqueHash)
-                .stockQuantity(faker.number().numberBetween(10, 501))
-                .build();
-    }
-
-    private boolean isValidTechnician(Technician tech) {
-        if (tech.getName() == null || !tech.getName().contains(" ")) return false;
-        if (tech.getEmail() == null || !tech.getEmail().contains("@")) return false;
-        if (tech.getSpecialty() == null || tech.getSpecialty().trim().isEmpty()) return false;
-        return true;
-    }
-
-    private boolean isValidMaterial(Material mat) {
-        if (mat.getName() == null || mat.getName().trim().isEmpty()) return false;
-        if (mat.getSku() == null || !Pattern.matches("^[A-Z0-9]+$", mat.getSku())) return false;
-        if (mat.getStockQuantity() == null || mat.getStockQuantity() < 0) return false;
-        return true;
     }
 }

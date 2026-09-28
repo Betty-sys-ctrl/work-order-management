@@ -10,7 +10,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Dashboard from './pages/Dashboard';
 import Technicians from './pages/Technicians';
 import Materials from './pages/Materials';
-const Orders = () => <h2>Órdenes</h2>;
+import Orders from './pages/Orders';
 
 export default function App() {
   return (

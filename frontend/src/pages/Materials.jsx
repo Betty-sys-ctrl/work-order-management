@@ -159,7 +159,7 @@ export default function Materials() {
                 </TableContainer>
             )}
 
-            <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+            <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
 
             {/* Base Form Modal */}
             <Dialog open={modalOpen} onClose={handleClose}>

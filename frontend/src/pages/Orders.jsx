@@ -188,7 +188,7 @@ export default function Orders() {
                 </TableContainer>
             )}
 
-            <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+            <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
 
             <Dialog open={modalOpen} onClose={handleClose}>
                 <DialogTitle>Crear Nueva Orden</DialogTitle>

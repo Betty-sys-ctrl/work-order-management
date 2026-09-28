@@ -133,7 +133,7 @@ export default function Technicians() {
                 </TableContainer>
             )}
             
-            <Pagination page={page} totalPages={totalPages} setPage={setPage} />
+            <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
 
             <Dialog open={modalOpen} onClose={handleClose}>
                 <DialogTitle>{currentTech.id ? 'Editar Técnico' : 'Registrar Técnico'}</DialogTitle>

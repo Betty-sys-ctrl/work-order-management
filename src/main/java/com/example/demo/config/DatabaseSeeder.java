@@ -42,7 +42,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             systemUserRepository.save(admin);
             log.info("Data Seeding: Usuario administrador por defecto creado.");
         } else {
-            log.info("La tabla de Usuarios ya está poblada. Omitiendo siembra.");
+            log.info("La tabla de Usuarios ya estÃ¡ poblada. Omitiendo siembra.");
         }
 
         if (technicianRepository.count() == 0) {
@@ -59,9 +59,9 @@ public class DatabaseSeeder implements CommandLineRunner {
                         .build());
             }
             technicianRepository.saveAll(technicians);
-            log.info("Data Seeding: 50 Técnicos insertados.");
+            log.info("Data Seeding: 50 TÃ©cnicos insertados.");
         } else {
-            log.info("La tabla de Técnicos ya está poblada. Omitiendo siembra.");
+            log.info("La tabla de TÃ©cnicos ya estÃ¡ poblada. Omitiendo siembra.");
         }
 
         if (materialRepository.count() == 0) {
@@ -77,7 +77,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             materialRepository.saveAll(materials);
             log.info("Data Seeding: 50 Materiales insertados.");
         } else {
-            log.info("La tabla de Materiales ya está poblada. Omitiendo siembra.");
+            log.info("La tabla de Materiales ya estÃ¡ poblada. Omitiendo siembra.");
         }
     }
 }

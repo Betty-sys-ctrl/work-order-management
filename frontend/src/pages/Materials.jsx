@@ -4,10 +4,15 @@ import EditIcon from '@mui/icons-material/Edit';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import api from '../api/axiosConfig';
 import { toast } from 'react-toastify';
+import Pagination from '../components/Pagination';
 
 export default function Materials() {
     const [materials, setMaterials] = useState([]);
     const [loading, setLoading] = useState(true);
+    
+    // Pagination
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
     
     // Base Modal (Create / Edit)
     const [modalOpen, setModalOpen] = useState(false);
@@ -23,8 +28,9 @@ export default function Materials() {
     const fetchMaterials = async () => {
         setLoading(true);
         try {
-            const response = await api.get('/api/materials');
-            setMaterials(response.data);
+            const response = await api.get(`/api/materials?page=` + page + `&size=20`);
+            setMaterials(response.data.content || []);
+            setTotalPages(response.data.totalPages || 1);
         } catch (error) {
             console.error(error.response || error);
             toast.error('Error al cargar materiales');
@@ -35,7 +41,7 @@ export default function Materials() {
 
     useEffect(() => {
         fetchMaterials();
-    }, []);
+    }, [page]);
 
     // Handlers for Base Modal
     const handleOpen = (material = { name: '', sku: '', stockQuantity: 0 }) => {
@@ -57,14 +63,12 @@ export default function Materials() {
         setSaving(true);
         try {
             if (currentMaterial.id) {
-                // Ignore stockQuantity when updating by sending only what is needed, or backend handles it.
-                // According to our previous rules, MaterialRequest needs stockQuantity but it could be ignored inside update.
                 const updatePayload = {
                     name: currentMaterial.name,
                     sku: currentMaterial.sku,
                     stockQuantity: currentMaterial.stockQuantity || 0
                 };
-                await api.put(`/api/materials/${currentMaterial.id}`, updatePayload);
+                await api.put(`/api/materials/` + currentMaterial.id, updatePayload);
                 toast.success('Material actualizado exitosamente');
             } else {
                 await api.post('/api/materials', currentMaterial);
@@ -96,8 +100,8 @@ export default function Materials() {
     const handleAddStock = async () => {
         setSavingStock(true);
         try {
-            await api.patch(`/api/materials/${stockMaterial.id}/add-stock`, { quantity: parseInt(quantityToAdd) });
-            toast.success(`Stock incrementado para ${stockMaterial.name}`);
+            await api.patch(`/api/materials/` + stockMaterial.id + `/add-stock`, { quantity: parseInt(quantityToAdd) });
+            toast.success(`Stock incrementado exitosamente`);
             handleCloseStockModal();
             fetchMaterials();
         } catch (error) {
@@ -154,6 +158,8 @@ export default function Materials() {
                     </Table>
                 </TableContainer>
             )}
+
+            <Pagination page={page} totalPages={totalPages} setPage={setPage} />
 
             {/* Base Form Modal */}
             <Dialog open={modalOpen} onClose={handleClose}>

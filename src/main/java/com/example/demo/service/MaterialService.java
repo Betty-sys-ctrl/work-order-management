@@ -3,17 +3,18 @@ import com.example.demo.dto.MaterialRequest;
 import com.example.demo.dto.MaterialResponse;
 import com.example.demo.model.Material;
 import com.example.demo.repository.MaterialRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
-import java.util.stream.Collectors;
+
 @Service
 public class MaterialService {
     private final MaterialRepository repository;
     public MaterialService(MaterialRepository repository) { this.repository = repository; }
     
-    public List<MaterialResponse> getAll() {
-        return repository.findAll().stream().map(this::mapToResponse).collect(Collectors.toList());
+    public Page<MaterialResponse> getAll(Pageable pageable) {
+        return repository.findAll(pageable).map(this::mapToResponse);
     }
     
     public MaterialResponse getById(Long id) {
@@ -36,7 +37,6 @@ public class MaterialService {
         Material mat = repository.findById(id).orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Material not found"));
         mat.setName(request.getName());
         mat.setSku(request.getSku());
-        if (request.getStockQuantity() != null) mat.setStockQuantity(request.getStockQuantity());
         return mapToResponse(repository.save(mat));
     }
     
@@ -47,11 +47,8 @@ public class MaterialService {
     
     @Transactional
     public MaterialResponse addStock(Long id, Integer quantity) {
-        if (quantity == null || quantity <= 0) {
-            throw new com.example.demo.exception.BusinessRuleException("Quantity to add must be greater than zero");
-        }
         Material mat = repository.findById(id).orElseThrow(() -> new com.example.demo.exception.ResourceNotFoundException("Material not found"));
-        mat.setStockQuantity((mat.getStockQuantity() != null ? mat.getStockQuantity() : 0) + quantity);
+        mat.setStockQuantity(mat.getStockQuantity() + quantity);
         return mapToResponse(repository.save(mat));
     }
     

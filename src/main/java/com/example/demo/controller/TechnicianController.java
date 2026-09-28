@@ -2,10 +2,12 @@ package com.example.demo.controller;
 import com.example.demo.dto.TechnicianRequest;
 import com.example.demo.dto.TechnicianResponse;
 import com.example.demo.service.TechnicianService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
-import java.util.List;
+
 @RestController
 @RequestMapping("/api/technicians")
 public class TechnicianController {
@@ -13,7 +15,9 @@ public class TechnicianController {
     public TechnicianController(TechnicianService service) { this.service = service; }
     
     @GetMapping
-    public List<TechnicianResponse> getAll() { return service.getAll(); }
+    public Page<TechnicianResponse> getAll(Pageable pageable) { 
+        return service.getAll(pageable); 
+    }
     
     @GetMapping("/{id}")
     public TechnicianResponse getById(@PathVariable Long id) { return service.getById(id); }

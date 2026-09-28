@@ -3,6 +3,7 @@ import { Box, Button, Typography, Table, TableBody, TableCell, TableContainer, T
 import EditIcon from '@mui/icons-material/Edit';
 import api from '../api/axiosConfig';
 import { toast } from 'react-toastify';
+import Pagination from '../components/Pagination';
 
 export default function Technicians() {
     const [technicians, setTechnicians] = useState([]);
@@ -10,12 +11,17 @@ export default function Technicians() {
     const [modalOpen, setModalOpen] = useState(false);
     const [currentTech, setCurrentTech] = useState({ name: '', email: '', specialty: '', active: true });
     const [saving, setSaving] = useState(false);
+    
+    // Pagination
+    const [page, setPage] = useState(0);
+    const [totalPages, setTotalPages] = useState(1);
 
     const fetchTechnicians = async () => {
         setLoading(true);
         try {
-            const response = await api.get('/api/technicians');
-            setTechnicians(response.data);
+            const response = await api.get(`/api/technicians?page=` + page + `&size=20`);
+            setTechnicians(response.data.content || []);
+            setTotalPages(response.data.totalPages || 1);
         } catch (error) {
             console.error(error.response || error);
             toast.error('Error al cargar técnicos');
@@ -26,7 +32,7 @@ export default function Technicians() {
 
     useEffect(() => {
         fetchTechnicians();
-    }, []);
+    }, [page]);
 
     const handleOpen = (tech = { name: '', email: '', specialty: '', active: true }) => {
         setCurrentTech(tech);
@@ -47,7 +53,7 @@ export default function Technicians() {
         setSaving(true);
         try {
             if (currentTech.id) {
-                await api.put(`/api/technicians/${currentTech.id}`, currentTech);
+                await api.put(`/api/technicians/` + currentTech.id, currentTech);
                 toast.success('Técnico actualizado');
             } else {
                 await api.post('/api/technicians', currentTech);
@@ -66,8 +72,8 @@ export default function Technicians() {
     const handleToggleActive = async (tech) => {
         try {
             const updatedTech = { ...tech, active: !tech.active };
-            await api.put(`/api/technicians/${tech.id}`, updatedTech);
-            toast.success(`Técnico ${updatedTech.active ? "activado" : "inactivado"}`);
+            await api.put(`/api/technicians/` + tech.id, updatedTech);
+            toast.success(`Técnico ` + (updatedTech.active ? 'activado' : 'inactivado'));
             fetchTechnicians();
         } catch (error) {
             console.error(error.response || error);
@@ -126,6 +132,8 @@ export default function Technicians() {
                     </Table>
                 </TableContainer>
             )}
+            
+            <Pagination page={page} totalPages={totalPages} setPage={setPage} />
 
             <Dialog open={modalOpen} onClose={handleClose}>
                 <DialogTitle>{currentTech.id ? 'Editar Técnico' : 'Registrar Técnico'}</DialogTitle>

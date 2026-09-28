@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, InputLabel, FormControl, Grid, ButtonGroup } from '@mui/material';
+import { Box, Button, Typography, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, CircularProgress, IconButton, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Select, MenuItem, InputLabel, FormControl, Grid } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import api from '../api/axiosConfig';
 import { toast } from 'react-toastify';
+import Pagination from '../components/Pagination';
 
 export default function Orders() {
     const [orders, setOrders] = useState([]);
@@ -20,12 +21,14 @@ export default function Orders() {
     const [currentOrder, setCurrentOrder] = useState({ title: '', description: '' });
     const [saving, setSaving] = useState(false);
 
-    // Initial Load of Technicians for dropdown
     useEffect(() => {
         const fetchTechnicians = async () => {
             try {
-                const response = await api.get('/api/technicians');
-                setTechnicians(response.data);
+                // Modified backend to return Page, so we need .content, wait!
+                // Wait! I modified TechnicianController to return Pageable! 
+                // That means GET /api/technicians will require size to get all of them!
+                const response = await api.get('/api/technicians?size=1000'); // large size for dropdown
+                setTechnicians(response.data.content || []);
             } catch (error) {
                 console.error(error.response || error);
                 toast.error('Error al cargar la lista de técnicos');
@@ -34,14 +37,12 @@ export default function Orders() {
         fetchTechnicians();
     }, []);
 
-    // Fetch Orders depending on pagination and filters
     const fetchOrders = async () => {
         setLoading(true);
         try {
-            // Build query params
             const params = new URLSearchParams();
             params.append('page', page);
-            params.append('size', 10);
+            params.append('size', 20);
             if (statusFilter) {
                 params.append('status', statusFilter);
             }
@@ -49,7 +50,7 @@ export default function Orders() {
                 params.append('technicianId', technicianFilter);
             }
 
-            const response = await api.get(`/api/orders?${params.toString()}`);
+            const response = await api.get(`/api/orders?` + params.toString());
             setOrders(response.data.content || []);
             setTotalPages(response.data.totalPages || 1);
         } catch (error) {
@@ -64,9 +65,8 @@ export default function Orders() {
         fetchOrders();
     }, [page, statusFilter, technicianFilter]);
 
-    // Handlers
     const handleFilterChange = (filterType, value) => {
-        setPage(0); // Reset pagination
+        setPage(0);
         if (filterType === 'status') setStatusFilter(value);
         if (filterType === 'technician') setTechnicianFilter(value);
     };
@@ -188,34 +188,7 @@ export default function Orders() {
                 </TableContainer>
             )}
 
-            <Box display="flex" justifyContent="space-between" alignItems="center" mt={3}>
-                <Typography variant="body2" color="textSecondary">
-                    Mostrando página {page + 1} de {totalPages}
-                </Typography>
-                <ButtonGroup variant="outlined" color="primary">
-                    <Button 
-                        onClick={() => setPage(page - 1)} 
-                        disabled={page === 0}
-                    >
-                        Anterior
-                    </Button>
-                    {Array.from({ length: totalPages }, (_, i) => (
-                        <Button 
-                            key={i} 
-                            onClick={() => setPage(i)} 
-                            variant={page === i ? 'contained' : 'outlined'}
-                        >
-                            {i + 1}
-                        </Button>
-                    ))}
-                    <Button 
-                        onClick={() => setPage(page + 1)} 
-                        disabled={page >= totalPages - 1}
-                    >
-                        Siguiente
-                    </Button>
-                </ButtonGroup>
-            </Box>
+            <Pagination page={page} totalPages={totalPages} setPage={setPage} />
 
             <Dialog open={modalOpen} onClose={handleClose}>
                 <DialogTitle>Crear Nueva Orden</DialogTitle>

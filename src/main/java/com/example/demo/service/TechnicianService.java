@@ -3,6 +3,8 @@ import com.example.demo.dto.TechnicianRequest;
 import com.example.demo.dto.TechnicianResponse;
 import com.example.demo.model.Technician;
 import com.example.demo.repository.TechnicianRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -12,8 +14,8 @@ public class TechnicianService {
     private final TechnicianRepository repository;
     public TechnicianService(TechnicianRepository repository) { this.repository = repository; }
     
-    public List<TechnicianResponse> getAll() {
-        return repository.findByActiveTrue().stream().map(this::mapToResponse).collect(Collectors.toList());
+    public Page<TechnicianResponse> getAll(Pageable pageable) {
+        return repository.findAll(pageable).map(this::mapToResponse);
     }
     
     public TechnicianResponse getById(Long id) {

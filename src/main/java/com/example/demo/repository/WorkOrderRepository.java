@@ -15,4 +15,5 @@ public interface WorkOrderRepository extends JpaRepository<WorkOrder, Long> {
     Page<WorkOrder> findByFilters(@Param("status") Status status, 
                                   @Param("technicianId") Long technicianId, 
                                   Pageable pageable);
+    long countByStatusIn(java.util.List<com.example.demo.model.Status> statuses);
 }

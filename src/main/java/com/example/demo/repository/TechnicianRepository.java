@@ -5,5 +5,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 @Repository
 public interface TechnicianRepository extends JpaRepository<Technician, Long> {
+    long countByActiveTrue();
     List<Technician> findByActiveTrue();
 }

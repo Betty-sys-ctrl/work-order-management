@@ -1,4 +1,4 @@
-# Work Order Management System
+﻿# Work Order Management System
 
 ## Descripción
 El **Sistema de Gestión de Órdenes de Trabajo** es una API RESTful robusta diseñada para coordinar y administrar órdenes de servicio, asignar técnicos, controlar historiales de estado y gestionar el consumo y stock de materiales utilizados en cada orden de trabajo.
@@ -16,14 +16,12 @@ El **Sistema de Gestión de Órdenes de Trabajo** es una API RESTful robusta dis
 
 ## Instalación y Ejecución
 
-### 1. Levantar la Base de Datos
-Asegúrate de que Docker Desktop esté ejecutándose. En la raíz del proyecto, ejecuta el siguiente comando para levantar el contenedor de PostgreSQL (mapeado en el puerto 5433):
-\\\ash
-docker compose up -d
-\\\
+### 1. Ejecutar la Aplicación (Zero-Touch Initialization)
+Gracias a la integración con spring-boot-docker-compose, el único requisito es tener **Docker Desktop abierto**. Al ejecutar la aplicación, Spring Boot detectará automáticamente el archivo docker-compose.yml, levantará el contenedor de PostgreSQL y lo detendrá al finalizar la ejecución.
 
-### 2. Ejecutar la Aplicación
-El proyecto incluye el Maven Wrapper, por lo que no es necesario tener Maven instalado globalmente. Ejecuta:
+La base de datos se poblará de forma automática (Data Seeding) con los registros necesarios para que la colección de Postman funcione sin intervención manual.
+
+Ejecuta:
 \\\ash
 ./mvnw clean compile
 ./mvnw spring-boot:run
@@ -35,4 +33,4 @@ Se incluye una colección lista para importar en Postman y probar los endpoints 
 1. Abre Postman.
 2. Haz clic en **Import** y selecciona el archivo \WorkOrders_Postman_Collection.json\ ubicado en la raíz del proyecto.
 3. La colección ya incluye una variable de entorno \{{base_url}}\ preconfigurada para apuntar a \http://localhost:8081\.
-4. Todos los payloads (cuerpos de petición JSON) cumplen con las validaciones de negocio implementadas en los DTOs.
+4. Todos los payloads (cuerpos de petición JSON) cumplen con las validaciones de negocio implementadas en los DTOs. Puedes usar la opción 'Run All' de Postman.

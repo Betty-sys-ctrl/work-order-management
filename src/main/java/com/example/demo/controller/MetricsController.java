@@ -40,8 +40,8 @@ public class MetricsController {
                 .collect(Collectors.toList());
 
         return DashboardMetricsDTO.builder()
-                .activeWorkOrders(activeOrders)
-                .activeTechnicians(activeTechs)
+                .activeOrdersCount(activeOrders)
+                .activeTechniciansCount(activeTechs)
                 .lowStockMaterials(lowStock)
                 .build();
     }

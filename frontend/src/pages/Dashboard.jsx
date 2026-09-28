@@ -15,7 +15,7 @@ export default function Dashboard() {
                 setMetrics(response.data);
             } catch (err) {
                 setError(true);
-                toast.error('Error al cargar métricas del dashboard');
+                toast.error('Error al cargar mÃ©tricas del dashboard');
             } finally {
                 setLoading(false);
             }
@@ -34,7 +34,7 @@ export default function Dashboard() {
     if (error) {
         return (
             <Box m={2}>
-                <Alert severity="error">No se pudieron cargar las métricas. Intente más tarde.</Alert>
+                <Alert severity="error">No se pudieron cargar las mÃ©tricas. Intente mÃ¡s tarde.</Alert>
             </Box>
         );
     }
@@ -49,10 +49,10 @@ export default function Dashboard() {
                     <Card sx={{ bgcolor: '#e3f2fd' }}>
                         <CardContent>
                             <Typography color="textSecondary" gutterBottom>
-                                Órdenes Activas (Pendiente / En Progreso)
+                                Ã“rdenes Activas (Pendiente / En Progreso)
                             </Typography>
                             <Typography variant="h3" component="h2">
-                                {metrics.activeWorkOrders}
+                                {metrics.activeOrdersCount}
                             </Typography>
                         </CardContent>
                     </Card>
@@ -61,10 +61,10 @@ export default function Dashboard() {
                     <Card sx={{ bgcolor: '#e8f5e9' }}>
                         <CardContent>
                             <Typography color="textSecondary" gutterBottom>
-                                Técnicos Activos
+                                TÃ©cnicos Activos
                             </Typography>
                             <Typography variant="h3" component="h2">
-                                {metrics.activeTechnicians}
+                                {metrics.activeTechniciansCount}
                             </Typography>
                         </CardContent>
                     </Card>

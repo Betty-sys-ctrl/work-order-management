@@ -6,8 +6,8 @@ import java.util.List;
 @Data
 @Builder
 public class DashboardMetricsDTO {
-    private long activeWorkOrders;
-    private long activeTechnicians;
+    private long activeOrdersCount;
+    private long activeTechniciansCount;
     private List<MaterialStockDTO> lowStockMaterials;
 
     @Data

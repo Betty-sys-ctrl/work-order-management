@@ -113,15 +113,16 @@ export default function Orders() {
             <Paper sx={{ p: 2, mb: 3 }}>
                 <Grid container spacing={2} alignItems="center">
                     <Grid item xs={12} sm={4}>
-                        <FormControl fullWidth>
+                        <FormControl fullWidth sx={{ minWidth: 200 }}>
                             <InputLabel id="status-label">Estado</InputLabel>
                             <Select
                                 labelId="status-label"
                                 value={statusFilter}
                                 label="Estado"
                                 onChange={(e) => handleFilterChange('status', e.target.value)}
+                                sx={{ borderRadius: 1, boxShadow: 1 }}
                             >
-                                <MenuItem value=""><em>Todos</em></MenuItem>
+                                <MenuItem value=""><em>Filtrar por Estado...</em></MenuItem>
                                 <MenuItem value="PENDING">Pendiente</MenuItem>
                                 <MenuItem value="IN_PROGRESS">En Progreso</MenuItem>
                                 <MenuItem value="COMPLETED">Completada</MenuItem>
@@ -130,15 +131,16 @@ export default function Orders() {
                         </FormControl>
                     </Grid>
                     <Grid item xs={12} sm={4}>
-                        <FormControl fullWidth>
+                        <FormControl fullWidth sx={{ minWidth: 200 }}>
                             <InputLabel id="tech-label">Técnico Asignado</InputLabel>
                             <Select
                                 labelId="tech-label"
                                 value={technicianFilter}
                                 label="Técnico Asignado"
                                 onChange={(e) => handleFilterChange('technician', e.target.value)}
+                                sx={{ borderRadius: 1, boxShadow: 1 }}
                             >
-                                <MenuItem value=""><em>Todos</em></MenuItem>
+                                <MenuItem value=""><em>Todos los Técnicos</em></MenuItem>
                                 {technicians.map((tech) => (
                                     <MenuItem key={tech.id} value={tech.id}>{tech.name}</MenuItem>
                                 ))}

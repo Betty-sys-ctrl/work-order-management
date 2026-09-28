@@ -1,20 +1,23 @@
 package com.example.demo.config;
 
 import com.example.demo.model.Material;
+import com.example.demo.model.SystemUser;
 import com.example.demo.model.Technician;
 import com.example.demo.repository.MaterialRepository;
-import com.example.demo.repository.TechnicianRepository;
-import com.example.demo.model.SystemUser;
 import com.example.demo.repository.SystemUserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import com.example.demo.repository.TechnicianRepository;
+import lombok.extern.slf4j.Slf4j;
 import net.datafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.regex.Pattern;
 
+@Slf4j
 @Component
 public class DatabaseSeeder implements CommandLineRunner {
 
@@ -24,7 +27,8 @@ public class DatabaseSeeder implements CommandLineRunner {
     private final PasswordEncoder passwordEncoder;
     private final Faker faker;
 
-    public DatabaseSeeder(TechnicianRepository technicianRepository, MaterialRepository materialRepository, SystemUserRepository systemUserRepository, PasswordEncoder passwordEncoder) {
+    public DatabaseSeeder(TechnicianRepository technicianRepository, MaterialRepository materialRepository, 
+                          SystemUserRepository systemUserRepository, PasswordEncoder passwordEncoder) {
         this.technicianRepository = technicianRepository;
         this.materialRepository = materialRepository;
         this.systemUserRepository = systemUserRepository;
@@ -34,16 +38,18 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        seedAdmin();
         seedTechnicians();
         seedMaterials();
-        seedAdmin();
+        log.info("Sembrado exitoso. Total en BD -> Técnicos: {}, Materiales: {}", 
+                 technicianRepository.count(), materialRepository.count());
     }
 
     private void seedAdmin() {
         if (systemUserRepository.count() == 0) {
             SystemUser admin = SystemUser.builder().username("admin").password(passwordEncoder.encode("admin123")).build();
             systemUserRepository.save(admin);
-            System.out.println("✅ Data Seeding: Default admin user created.");
+            log.info("✅ Data Seeding: Default admin user created.");
         }
     }
 
@@ -54,7 +60,6 @@ public class DatabaseSeeder implements CommandLineRunner {
                 technicians.add(generateTechnician());
             }
             technicianRepository.saveAll(technicians);
-            System.out.println("âœ… Data Seeding: 50 Technicians created.");
         } else {
             List<Technician> existing = technicianRepository.findAll();
             boolean updated = false;
@@ -70,7 +75,6 @@ public class DatabaseSeeder implements CommandLineRunner {
             }
             if (updated) {
                 technicianRepository.saveAll(existing);
-                System.out.println("âœ… Data Seeding: Invalid Technicians cleaned and updated.");
             }
         }
     }
@@ -82,7 +86,6 @@ public class DatabaseSeeder implements CommandLineRunner {
                 materials.add(generateMaterial());
             }
             materialRepository.saveAll(materials);
-            System.out.println("âœ… Data Seeding: 50 Materials created.");
         } else {
             List<Material> existing = materialRepository.findAll();
             boolean updated = false;
@@ -97,7 +100,6 @@ public class DatabaseSeeder implements CommandLineRunner {
             }
             if (updated) {
                 materialRepository.saveAll(existing);
-                System.out.println("âœ… Data Seeding: Invalid Materials cleaned and updated.");
             }
         }
     }
@@ -105,18 +107,20 @@ public class DatabaseSeeder implements CommandLineRunner {
     private Technician generateTechnician() {
         String firstName = faker.name().firstName();
         String lastName = faker.name().lastName();
+        String uniqueHash = UUID.randomUUID().toString().substring(0,4);
         return Technician.builder()
                 .name(firstName + " " + lastName)
-                .email(firstName.toLowerCase() + "." + lastName.toLowerCase() + "@example.com")
+                .email(firstName.toLowerCase() + "." + lastName.toLowerCase() + uniqueHash + "@example.com")
                 .specialty(faker.job().position())
                 .active(true)
                 .build();
     }
 
     private Material generateMaterial() {
+        String uniqueHash = UUID.randomUUID().toString().substring(0,4).toUpperCase();
         return Material.builder()
                 .name(faker.commerce().productName())
-                .sku(faker.regexify("[A-Z0-9]{8}"))
+                .sku(faker.regexify("[A-Z0-9]{4}") + uniqueHash)
                 .stockQuantity(faker.number().numberBetween(10, 501))
                 .build();
     }

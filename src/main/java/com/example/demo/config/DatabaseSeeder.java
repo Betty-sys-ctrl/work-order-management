@@ -4,6 +4,9 @@ import com.example.demo.model.Material;
 import com.example.demo.model.Technician;
 import com.example.demo.repository.MaterialRepository;
 import com.example.demo.repository.TechnicianRepository;
+import com.example.demo.model.SystemUser;
+import com.example.demo.repository.SystemUserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import net.datafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -17,11 +20,15 @@ public class DatabaseSeeder implements CommandLineRunner {
 
     private final TechnicianRepository technicianRepository;
     private final MaterialRepository materialRepository;
+    private final SystemUserRepository systemUserRepository;
+    private final PasswordEncoder passwordEncoder;
     private final Faker faker;
 
-    public DatabaseSeeder(TechnicianRepository technicianRepository, MaterialRepository materialRepository) {
+    public DatabaseSeeder(TechnicianRepository technicianRepository, MaterialRepository materialRepository, SystemUserRepository systemUserRepository, PasswordEncoder passwordEncoder) {
         this.technicianRepository = technicianRepository;
         this.materialRepository = materialRepository;
+        this.systemUserRepository = systemUserRepository;
+        this.passwordEncoder = passwordEncoder;
         this.faker = new Faker();
     }
 
@@ -29,6 +36,15 @@ public class DatabaseSeeder implements CommandLineRunner {
     public void run(String... args) throws Exception {
         seedTechnicians();
         seedMaterials();
+        seedAdmin();
+    }
+
+    private void seedAdmin() {
+        if (systemUserRepository.count() == 0) {
+            SystemUser admin = SystemUser.builder().username("admin").password(passwordEncoder.encode("admin123")).build();
+            systemUserRepository.save(admin);
+            System.out.println("✅ Data Seeding: Default admin user created.");
+        }
     }
 
     private void seedTechnicians() {
@@ -38,7 +54,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 technicians.add(generateTechnician());
             }
             technicianRepository.saveAll(technicians);
-            System.out.println("✅ Data Seeding: 50 Technicians created.");
+            System.out.println("âœ… Data Seeding: 50 Technicians created.");
         } else {
             List<Technician> existing = technicianRepository.findAll();
             boolean updated = false;
@@ -54,7 +70,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             }
             if (updated) {
                 technicianRepository.saveAll(existing);
-                System.out.println("✅ Data Seeding: Invalid Technicians cleaned and updated.");
+                System.out.println("âœ… Data Seeding: Invalid Technicians cleaned and updated.");
             }
         }
     }
@@ -66,7 +82,7 @@ public class DatabaseSeeder implements CommandLineRunner {
                 materials.add(generateMaterial());
             }
             materialRepository.saveAll(materials);
-            System.out.println("✅ Data Seeding: 50 Materials created.");
+            System.out.println("âœ… Data Seeding: 50 Materials created.");
         } else {
             List<Material> existing = materialRepository.findAll();
             boolean updated = false;
@@ -81,7 +97,7 @@ public class DatabaseSeeder implements CommandLineRunner {
             }
             if (updated) {
                 materialRepository.saveAll(existing);
-                System.out.println("✅ Data Seeding: Invalid Materials cleaned and updated.");
+                System.out.println("âœ… Data Seeding: Invalid Materials cleaned and updated.");
             }
         }
     }
